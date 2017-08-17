@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2988f6"
+    android:orientation="vertical"
+    android:paddingRight="20dp">
+
+    <ImageView
+        android:id="@+id/img_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="50dp"
+        android:src="@mipmap/logo_03" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:background="#2988f6"
+            android:drawableLeft="@mipmap/tubiao_user_name"
+            android:hint="请输入用户名"
+            android:paddingRight="40dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/user_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/user_name"
+            android:layout_below="@+id/user_name"
+            android:background="#2988f6"
+            android:drawableLeft="@mipmap/tubiao_password"
+            android:hint="请输入密码"
+            android:textColor="#fff"
+            android:textColorHint="#fff"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/denglu"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/user_name"
+            android:layout_alignRight="@+id/user_name"
+            android:layout_below="@+id/user_pwd"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/bg_button"
+            android:text="登 录"
+            android:textColor="#2988f6"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</LinearLayout>

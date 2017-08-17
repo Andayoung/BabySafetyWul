@@ -3,6 +3,7 @@ package com.tencent.devicedemo.track;
 import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.DisplayMetrics;
 
@@ -16,7 +17,9 @@ import com.baidu.trace.api.track.OnTrackListener;
 import com.baidu.trace.model.BaseRequest;
 import com.baidu.trace.model.OnCustomAttributeListener;
 import com.baidu.trace.model.ProcessOption;
+import com.tencent.devicedemo.track.activity.LogOrRegActivity;
 import com.tencent.devicedemo.track.utils.CommonUtil;
+import com.tencent.devicedemo.track.utils.SerialNumberHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,13 +42,27 @@ public class TrackApplication extends Application {
     public boolean isGatherStarted = false;
     public static int screenWidth = 0;
     public static int screenHeight = 0;
+    private SerialNumberHelper serialNumberHelper;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-//        entityName = CommonUtil.getImei(this);
-        entityName = "biubiubiu";
+        if (serialNumberHelper == null) {
+            serialNumberHelper = new SerialNumberHelper(getApplicationContext());
+        }
+        String serialNumber=serialNumberHelper.read4File();
+        if (serialNumber==null|| serialNumber.equals("")) {
+            entityName = "20180101uu000001";
+        } else {
+            String[] s = serialNumber.split(" ");
+            if(s.length<6){
+                entityName = "20180101uu000001";
+            }else {
+                entityName = s[0];
+            }
+        }
+//        entityName = "20180101uu000001";
         // 若为创建独立进程，则不初始化成员变量
         if ("com.baidu.track:remote".equals(CommonUtil.getCurProcessName(mContext))) {
             return;

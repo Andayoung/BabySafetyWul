@@ -24,7 +24,6 @@ public class DateDialog extends Dialog implements DatePicker.OnDateChangedListen
     private SimpleDateFormat simpleDateFormat = null;
     private Callback callback = null;
     private DatePicker datePicker = null;
-    private TimePicker timePicker = null;
     private String dateTime;
 
     private int year;
@@ -56,9 +55,7 @@ public class DateDialog extends Dialog implements DatePicker.OnDateChangedListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_date);
         datePicker = (DatePicker) findViewById(R.id.date_picker);
-        timePicker = (TimePicker) findViewById(R.id.time_picker);
         ViewUtil.resizePicker(datePicker);
-        ViewUtil.resizePicker(timePicker);
         Button cancelBtn = (Button) findViewById(R.id.btn_cancel);
         Button sureBtn = (Button) findViewById(R.id.btn_sure);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +76,6 @@ public class DateDialog extends Dialog implements DatePicker.OnDateChangedListen
         });
 
         datePicker.init(this.year, this.month, this.day, this);
-        timePicker.setOnTimeChangedListener(this);
-        timePicker.setIs24HourView(true);
     }
 
     @Override

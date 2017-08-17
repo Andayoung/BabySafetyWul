@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -19,6 +20,7 @@ import com.tencent.devicedemo.R;
 import com.tencent.devicedemo.track.TrackApplication;
 import com.tencent.devicedemo.track.utils.BitmapUtil;
 import com.tencent.devicedemo.track.utils.CommonUtil;
+import com.tencent.devicedemo.track.utils.SerialNumberHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,22 +32,43 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView btnTrace;
     private ImageView btnFence;
     private TextView txtTitle;
+    private TextView txtExit;
+    private SerialNumberHelper serialNumberHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        trackApp = (TrackApplication) getApplicationContext();
         init();
         BitmapUtil.init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (serialNumberHelper == null) {
+            serialNumberHelper = new SerialNumberHelper(getApplicationContext());
+        }
+        String serialNumber = serialNumberHelper.read4File();
+        if (serialNumber == null || serialNumber.equals("")) {
+            Intent intent = new Intent(this, LogOrRegActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            String[] s = serialNumber.split(" ");
+            trackApp.entityName = s[0];
+        }
+    }
+
     private void init() {
-        trackApp = (TrackApplication) getApplicationContext();
-        btnFence = (ImageView)findViewById(R.id.btn_fence);
-        btnTrace = (ImageView)findViewById(R.id.btn_trace);
-        txtTitle = (TextView)findViewById(R.id.tv_activity_title);
+        btnFence = (ImageView) findViewById(R.id.btn_fence);
+        btnTrace = (ImageView) findViewById(R.id.btn_trace);
+        txtTitle = (TextView) findViewById(R.id.tv_activity_title);
+        txtExit=(TextView)findViewById(R.id.exit);
         btnFence.setOnClickListener(this);
         btnTrace.setOnClickListener(this);
+        txtExit.setOnClickListener(this);
         setDefaultFragment();
     }
 
@@ -86,7 +109,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 btnTrace.setSelected(true);
                 txtTitle.setText(R.string.app_trace);
                 break;
-        }
+            case R.id.exit:
+                if (serialNumberHelper == null) {
+                    serialNumberHelper = new SerialNumberHelper(getApplicationContext());
+                }
+                serialNumberHelper.deleteFile();
+                finish();
+                break;
+            }
 
         transaction.commit();
     }
@@ -100,7 +130,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             requestPermissions(permissions.toArray(new String[permissions.size()]), 0);
         }
     }
-
 
 
     private boolean isNeedRequestPermissions(List<String> permissions) {

@@ -21,7 +21,7 @@
     <application
         android:name=".track.TrackApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/icon_app"
+        android:icon="@mipmap/app_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -39,6 +39,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".track.activity.LogOrRegActivity"/>
 
         <service
             android:name="com.baidu.trace.LBSTraceService"

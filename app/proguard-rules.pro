@@ -15,3 +15,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class java.lang.management.ManagementFactory{ *; }
+-keep class java.lang.management.ThreadMXBean{ *; }
+-dontwarn java.lang.management.**
+-keep class junit.framework.TestCase{ *; }
+-keep class junit.framework.TestSuite{ *; }
+-dontwarn junit.framework.**
+-keep class junit.runner.BaseTestRunner{ *; }
+-dontwarn junit.runner.**
+-keep class com.baidu.** { *; }
+-keep class vi.com.gdi.bgl.android.**{*;}

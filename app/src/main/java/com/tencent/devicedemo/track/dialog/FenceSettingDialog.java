@@ -28,10 +28,10 @@ public class FenceSettingDialog extends Dialog implements View.OnClickListener {
     private View vertexesNumberLayout = null;
     private Button cancelBtn = null;
     private Button sureBtn = null;
-    private RadioButton localBtn = null;
-    private RadioButton serverBtn = null;
-    private RadioButton createBtn = null;
-    private RadioButton listBtn = null;
+    //    private RadioButton localBtn = null;
+//    private RadioButton serverBtn = null;
+//    private RadioButton createBtn = null;
+//    private RadioButton listBtn = null;
     private RadioButton circleBtn = null;
     private RadioButton polylineBtn = null;
     private RadioButton polygonBtn = null;
@@ -41,9 +41,8 @@ public class FenceSettingDialog extends Dialog implements View.OnClickListener {
     private EditText fenceNameText = null;
     private EditText vertexesNumberText = null;
 
-    private FenceType fenceType = FenceType.local;
+    private FenceType fenceType = FenceType.server;
     private FenceShape fenceShape = FenceShape.circle;
-    private int operateType = R.id.btn_fence_list;
 
     /**
      * @param activity ：调用的父activity
@@ -65,24 +64,23 @@ public class FenceSettingDialog extends Dialog implements View.OnClickListener {
         vertexesNumberLayout = findViewById(R.id.layout_vertexes_number);
         cancelBtn = (Button) findViewById(R.id.btn_cancel);
         sureBtn = (Button) findViewById(R.id.btn_sure);
-        localBtn = (RadioButton) findViewById(R.id.btn_local);
-        serverBtn = (RadioButton) findViewById(R.id.btn_server);
-        createBtn = (RadioButton) findViewById(R.id.btn_create_fence);
-        listBtn = (RadioButton) findViewById(R.id.btn_fence_list);
+//        localBtn = (RadioButton) findViewById(R.id.btn_local);
+//        serverBtn = (RadioButton) findViewById(R.id.btn_server);
+//        createBtn = (RadioButton) findViewById(R.id.btn_create_fence);
+//        listBtn = (RadioButton) findViewById(R.id.btn_fence_list);
         circleBtn = (RadioButton) findViewById(R.id.btn_circle);
         polylineBtn = (RadioButton) findViewById(R.id.btn_polyline);
         polygonBtn = (RadioButton) findViewById(R.id.btn_polygon);
 
-        createCaptionText = (TextView) findViewById(R.id.tv_create_caption);
 
         fenceNameText = (EditText) findViewById(R.id.edtTxt_fence_name);
         vertexesNumberText = (EditText) findViewById(R.id.text_vertexes_number);
         cancelBtn.setOnClickListener(this);
         sureBtn.setOnClickListener(this);
-        localBtn.setOnClickListener(this);
-        serverBtn.setOnClickListener(this);
-        createBtn.setOnClickListener(this);
-        listBtn.setOnClickListener(this);
+//        localBtn.setOnClickListener(this);
+//        serverBtn.setOnClickListener(this);
+//        createBtn.setOnClickListener(this);
+//        listBtn.setOnClickListener(this);
         circleBtn.setOnClickListener(this);
         polylineBtn.setOnClickListener(this);
         polygonBtn.setOnClickListener(this);
@@ -91,7 +89,7 @@ public class FenceSettingDialog extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_local:
+            /*case R.id.btn_local:
                 fenceType = FenceType.local;
                 fenceShape = FenceShape.circle;
                 fenceShapeLayout.setVisibility(View.GONE);
@@ -129,7 +127,7 @@ public class FenceSettingDialog extends Dialog implements View.OnClickListener {
                 fenceNameLayout.setVisibility(View.GONE);
                 vertexesNumberLayout.setVisibility(View.GONE);
                 createCaptionText.setVisibility(View.GONE);
-                break;
+                break;*/
 
             case R.id.btn_circle:
                 fenceShape = FenceShape.circle;
@@ -165,7 +163,7 @@ public class FenceSettingDialog extends Dialog implements View.OnClickListener {
                     if (TextUtils.isEmpty(fenceName)) {
                         fenceName = mParent.getResources().getString(R.string.fence_name_hint);
                     }
-                    callback.onFenceOperateCallback(fenceType, fenceShape, fenceName, vertexesNumber, operateType);
+                    callback.onFenceOperateCallback(fenceType, fenceShape, fenceName, vertexesNumber);
                 }
                 dismiss();
                 break;
@@ -180,8 +178,7 @@ public class FenceSettingDialog extends Dialog implements View.OnClickListener {
      */
     public interface Callback {
 
-        void onFenceOperateCallback(FenceType fenceType, FenceShape fenceShape, String fenceName, int vertexesNumber,
-                                    int operateType);
+        void onFenceOperateCallback(FenceType fenceType, FenceShape fenceShape, String fenceName, int vertexesNumber);
     }
 
 }

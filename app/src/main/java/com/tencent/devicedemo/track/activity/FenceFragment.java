@@ -128,6 +128,12 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
         return convertView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackApp.mClient.startTrace(trackApp.mTrace, traceListener);
+    }
+
     private void init() {
         imgSet = (ImageView) convertView.findViewById(R.id.img_activity_options);
         startRealTimeLoc(Constants.LOC_INTERVAL);
@@ -144,7 +150,6 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
         mapUtil.baiduMap.setOnMapStatusChangeListener(mClusterManager);
         mapUtil.baiduMap.setOnMarkerClickListener(mClusterManager);
         initListener();
-        trackApp.mClient.startTrace(trackApp.mTrace, traceListener);
     }
 
     private void initListener() {
@@ -225,12 +230,13 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
         settingCallback = new FenceSettingDialog.Callback() {
             @Override
             public void onFenceOperateCallback(FenceType fenceType, FenceShape fenceShape,
-                                               String fenceName, int vertexesNumber, int operateType) {
+                                               String fenceName, int vertexesNumber) {
                 FenceFragment.this.fenceType = fenceType;
                 FenceFragment.this.fenceShape = fenceShape;
                 FenceFragment.this.fenceName = fenceName;
                 FenceFragment.this.vertexesNumber = vertexesNumber;
-                switch (operateType) {
+                mapUtil.baiduMap.setOnMapClickListener(FenceFragment.this);
+                /*switch (operateType) {
                     case R.id.btn_create_fence:
                         mapUtil.baiduMap.setOnMapClickListener(FenceFragment.this);
                         break;
@@ -239,7 +245,7 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
                         break;
                     default:
                         break;
-                }
+                }*/
             }
         };
 
@@ -278,6 +284,9 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
                 tempOverlays.put(tag, mapUtil.baiduMap.addOverlay(overlayOptions));
                 mapUtil.baiduMap.setOnMapClickListener(null);
                 createFence(tag);
+                mapVertexes.clear();
+                traceVertexes.clear();
+                vertexIndex=0;
             }
 
             @Override
@@ -602,7 +611,7 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
      */
     @Override
     public void onMapLoaded() {
-        queryFenceList(FenceType.local);
+//        queryFenceList(FenceType.local);
         queryFenceList(FenceType.server);
     }
 
@@ -611,7 +620,6 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
      */
     @Override
     public void onMapClick(com.baidu.mapapi.model.LatLng latLng) {
-
         switch (fenceShape) {
             case circle:
                 circleCenter = latLng;
@@ -690,10 +698,10 @@ public class FenceFragment extends Fragment implements View.OnClickListener,
     private void queryFenceList(FenceType fenceType) {
         FenceListRequest request = null;
         switch (fenceType) {
-            case local:
+            /*case local:
                 request = FenceListRequest.buildLocalRequest(trackApp.getTag(),
                         trackApp.serviceId, trackApp.entityName, null);
-                break;
+                break;*/
 
             case server:
                 request = FenceListRequest.buildServerRequest(trackApp.getTag(),

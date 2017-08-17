@@ -256,7 +256,9 @@ public class MapUtil {
      */
     public void drawHistoryTrack(List<LatLng> points, SortType sortType) {
         // 绘制新覆盖物前，清空之前的覆盖物
-        baiduMap.clear();
+        if(baiduMap!=null){
+            baiduMap.clear();
+        }
         if (points == null || points.size() == 0) {
             if (null != polylineOverlay) {
                 polylineOverlay.remove();
